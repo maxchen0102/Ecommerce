@@ -1,0 +1,56 @@
+/* Custom styles for Simple Ecommerce */
+
+/* Product card styles */
+.card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.card-img-top {
+    height: 200px;
+    object-fit: cover;
+}
+
+/* Button styles */
+.btn-primary {
+    background-color: #4e73df;
+    border-color: #4e73df;
+}
+
+.btn-primary:hover {
+    background-color: #2e59d9;
+    border-color: #2e59d9;
+}
+
+/* Footer styles */
+footer {
+    margin-top: auto;
+}
+
+/* Make page fill viewport height */
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Category sidebar styles */
+.list-group-item.active {
+    background-color: #4e73df;
+    border-color: #4e73df;
+}
+
+/* Product detail page */
+.product-detail img {
+    max-height: 400px;
+    object-fit: contain;
+}
+
+/* Shopping cart styles */
+.table img {
+    object-fit: cover;
+} 
