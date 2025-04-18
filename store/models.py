@@ -6,14 +6,13 @@ from django.urls import reverse
 
 class Category(models.Model):
     name = models.CharField(max_length=100)
-    slug = models.SlugField(max_length=100, unique=True)
     description = models.TextField(blank=True)
 
     class Meta:
         verbose_name_plural = 'Categories'
 
     def get_absolute_url(self):
-        return reverse('product_list_by_category', args=[self.slug])
+        return reverse('product_list_by_category', args=[self.id])
 
     def __str__(self):
         return self.name

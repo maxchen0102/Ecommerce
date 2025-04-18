@@ -22,14 +22,14 @@ def home(request):
     return render(request, 'store/home.html', context)
 
 
-def product_list(request, category_slug=None):
+def product_list(request, category_id=None):
     """View to list all products or filter by category"""
     category = None
     categories = Category.objects.all()
     products = Product.objects.filter(available=True)
 
-    if category_slug:
-        category = get_object_or_404(Category, slug=category_slug)
+    if category_id:
+        category = get_object_or_404(Category, id=category_id)
         products = products.filter(category=category)
 
     context = {
