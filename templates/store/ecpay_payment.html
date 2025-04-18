@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title %}前往付款 | Simple Ecommerce{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8 text-center">
+        <h2 class="mb-4">前往付款頁面</h2>
+        <div class="card mb-4">
+            <div class="card-body">
+                <div class="d-flex justify-content-center my-4">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+                <p class="mb-0">正在連接到綠界支付系統，請稍候...</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 顯示綠界表單，由SDK自動提交 -->
+{{ trade_info|safe }}
+{% endblock %} 

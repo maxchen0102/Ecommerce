@@ -1,5 +1,6 @@
 from django.urls import path
 from . import views
+from . import payment
 
 urlpatterns = [
     path('', views.home, name='home'),
@@ -16,4 +17,11 @@ urlpatterns = [
          views.remove_cart_item, name='remove_cart_item'),
     path('orders/', views.order_list, name='order_list'),
     path('order/<int:order_id>/', views.order_detail, name='order_detail'),
+    path('create-order/', views.create_order_from_cart, name='create_order'),
+
+    # 綠界金流相關 URL - 簡化版
+    path('ecpay-payment/<int:order_id>/',
+         payment.EcpayPayment.create_order_payment, name='ecpay_payment'),
+    path('ecpay-payment-return/',
+         payment.ecpay_payment_return, name='ecpay_payment_return'),
 ]

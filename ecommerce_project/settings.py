@@ -25,7 +25,10 @@ SECRET_KEY = 'django-insecure-pn35a&(2dk!9%fh)$b$ya$26eh7j^cuc^0h!fu_7n$=zr#$l4n
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
+
+# CSRF 信任的域名，添加 ngrok 域名
+CSRF_TRUSTED_ORIGINS = ['https://432e-211-23-144-132.ngrok-free.app']
 
 
 # Application definition

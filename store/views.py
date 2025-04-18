@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse
 from .models import Category, Product, Cart, CartItem, Order, OrderItem
 import uuid
+from decimal import Decimal
 
 
 def _cart_id(request):
@@ -135,3 +136,48 @@ def order_detail(request, order_id):
         'order': order,
     }
     return render(request, 'store/order_detail.html', context)
+
+
+def create_order_from_cart(request):
+    """View to create an order from the cart items"""
+    try:
+        cart = Cart.objects.get(cart_id=_cart_id(request))
+        cart_items = CartItem.objects.filter(cart=cart, is_active=True)
+
+        if not cart_items:
+            return redirect('cart')
+
+        # 計算總金額
+        total = sum(item.product.price * item.quantity for item in cart_items)
+
+        # 創建訂單
+        order = Order.objects.create(
+            total=Decimal(total),
+            # 預設值，避免資料庫錯誤
+            first_name="顧客",
+            last_name="",
+            email="",
+            phone="",
+            address="",
+            city="",
+            state="",
+            country=""
+        )
+
+        # 創建訂單項目
+        # 多個商品關聯到一個訂單id
+        for item in cart_items:
+            OrderItem.objects.create(
+                order=order,
+                product=item.product,
+                price=item.product.price,
+                quantity=item.quantity,
+            )
+
+        # 清空購物車
+        cart_items.delete()
+
+        # 直接導向到綠界付款頁面
+        return redirect('ecpay_payment', order_id=order.id)
+    except Cart.DoesNotExist:
+        return redirect('cart')

@@ -5,11 +5,11 @@
 {% block content %}
 <div class="row">
     <div class="col-12">
-        <h2 class="mb-4">Order #{{ order.order_number }}</h2>
+        <h2 class="mb-4">訂單 #{{ order.order_number }}</h2>
         
         <div class="card mb-4">
             <div class="card-header d-flex justify-content-between align-items-center">
-                <h5 class="mb-0">Order Details</h5>
+                <h5 class="mb-0">訂單詳情</h5>
                 <span class="badge {% if order.status == 'New' %}bg-primary{% elif order.status == 'Accepted' %}bg-info{% elif order.status == 'Completed' %}bg-success{% else %}bg-danger{% endif %}">
                     {{ order.status }}
                 </span>
@@ -17,34 +17,40 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-6">
-                        <p><strong>Date:</strong> {{ order.created_at|date:"F d, Y" }}</p>
-                        <p><strong>Name:</strong> {{ order.first_name }} {{ order.last_name }}</p>
+                        <p><strong>日期:</strong> {{ order.created_at|date:"F d, Y" }}</p>
+                        <p><strong>姓名:</strong> {{ order.first_name }} {{ order.last_name }}</p>
                         <p><strong>Email:</strong> {{ order.email }}</p>
-                        <p><strong>Phone:</strong> {{ order.phone }}</p>
+                        <p><strong>電話:</strong> {{ order.phone }}</p>
                     </div>
                     <div class="col-md-6">
-                        <p><strong>Address:</strong> {{ order.address }}</p>
-                        <p><strong>City:</strong> {{ order.city }}</p>
-                        <p><strong>State:</strong> {{ order.state }}</p>
-                        <p><strong>Country:</strong> {{ order.country }}</p>
+                        <p><strong>地址:</strong> {{ order.address }}</p>
+                        <p><strong>城市:</strong> {{ order.city }}</p>
+                        <p><strong>縣/市:</strong> {{ order.state }}</p>
+                        <p><strong>國家:</strong> {{ order.country }}</p>
                     </div>
                 </div>
+                
+                {% if order.status == 'New' %}
+                <div class="d-flex justify-content-end mt-3">
+                    <a href="{% url 'ecpay_payment' order.id %}" class="btn btn-success">立即付款</a>
+                </div>
+                {% endif %}
             </div>
         </div>
         
         <div class="card">
             <div class="card-header">
-                <h5 class="mb-0">Order Items</h5>
+                <h5 class="mb-0">訂單項目</h5>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
                     <table class="table">
                         <thead>
                             <tr>
-                                <th>Product</th>
-                                <th>Price</th>
-                                <th>Quantity</th>
-                                <th class="text-end">Total</th>
+                                <th>商品</th>
+                                <th>價格</th>
+                                <th>數量</th>
+                                <th class="text-end">小計</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -57,7 +63,7 @@
                                 </tr>
                             {% endfor %}
                             <tr>
-                                <td colspan="3" class="text-end"><strong>Order Total:</strong></td>
+                                <td colspan="3" class="text-end"><strong>訂單總計:</strong></td>
                                 <td class="text-end"><strong>${{ order.total }}</strong></td>
                             </tr>
                         </tbody>
@@ -67,7 +73,7 @@
         </div>
         
         <div class="mt-4">
-            <a href="{% url 'order_list' %}" class="btn btn-secondary">Back to Orders</a>
+            <a href="{% url 'order_list' %}" class="btn btn-secondary">返回訂單列表</a>
         </div>
     </div>
 </div>

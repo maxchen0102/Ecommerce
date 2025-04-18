@@ -1,5 +1,7 @@
 from django.db import models
 from django.urls import reverse
+from datetime import datetime
+import uuid
 
 # Create your models here.
 
@@ -84,6 +86,14 @@ class Order(models.Model):
 
     def get_absolute_url(self):
         return reverse('order_detail', args=[self.id])
+
+    def save(self, *args, **kwargs):
+        # 如果沒有訂單編號，則自動生成
+        if not self.order_number:
+            year_month = self.created_at.strftime(
+                '%Y%m') if self.created_at else datetime.now().strftime('%Y%m')
+            self.order_number = f"{year_month}-{str(uuid.uuid4().int)[:8]}"
+        super().save(*args, **kwargs)
 
 
 class OrderItem(models.Model):
