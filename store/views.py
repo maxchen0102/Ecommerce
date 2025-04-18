@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse
-from .models import Category, Product, Cart, CartItem
+from .models import Category, Product, Cart, CartItem, Order, OrderItem
 import uuid
 
 
@@ -117,3 +117,21 @@ def remove_cart_item(request, product_id):
     cart_item.delete()
 
     return redirect('cart')
+
+
+def order_list(request):
+    """View to display all orders"""
+    orders = Order.objects.all().order_by('-created_at')
+    context = {
+        'orders': orders,
+    }
+    return render(request, 'store/order_list.html', context)
+
+
+def order_detail(request, order_id):
+    """View to display an order"""
+    order = get_object_or_404(Order, id=order_id)
+    context = {
+        'order': order,
+    }
+    return render(request, 'store/order_detail.html', context)

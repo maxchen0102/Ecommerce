@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block title %}Orders | Simple Ecommerce{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <h2 class="mb-4">Orders</h2>
+        
+        {% if orders %}
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Order Number</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Total</th>
+                            <th>Status</th>
+                            <th>Date</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for order in orders %}
+                            <tr>
+                                <td>{{ order.order_number }}</td>
+                                <td>{{ order.first_name }} {{ order.last_name }}</td>
+                                <td>{{ order.email }}</td>
+                                <td>${{ order.total }}</td>
+                                <td>
+                                    <span class="badge {% if order.status == 'New' %}bg-primary{% elif order.status == 'Accepted' %}bg-info{% elif order.status == 'Completed' %}bg-success{% else %}bg-danger{% endif %}">
+                                        {{ order.status }}
+                                    </span>
+                                </td>
+                                <td>{{ order.created_at|date:"M d, Y" }}</td>
+                                <td>
+                                    <a href="{{ order.get_absolute_url }}" class="btn btn-sm btn-outline-primary">View</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <div class="alert alert-info">
+                <p>No orders found.</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %} 
