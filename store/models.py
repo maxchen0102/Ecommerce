@@ -2,6 +2,7 @@ from django.db import models
 from django.urls import reverse
 from datetime import datetime
 import uuid
+from django.contrib.auth.models import User
 
 # Create your models here.
 
@@ -31,6 +32,8 @@ class Product(models.Model):
     available = models.BooleanField(default=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
+    seller = models.ForeignKey(
+        User, related_name='products', on_delete=models.CASCADE, null=True)
 
     # get the absolute url for the product, which is the product detail page,
     def get_absolute_url(self):

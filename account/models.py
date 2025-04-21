@@ -14,6 +14,7 @@ class UserProfile(models.Model):
     country = models.CharField(max_length=50, blank=True)
     profile_picture = models.ImageField(
         upload_to='users/', blank=True, null=True)
+    is_seller = models.BooleanField(default=False)
 
     def __str__(self):
         return f"{self.user.username}'s Profile"

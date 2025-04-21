@@ -4,7 +4,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .forms import RegistrationForm, UserProfileForm
 from .models import UserProfile
-from store.models import Order
+from store.models import Order, Product
+from .decorators import seller_required
 
 
 def register(request):
@@ -35,7 +36,15 @@ def user_login(request):
 
         if user is not None:
             login(request, user)
-            # 獲取登入後要導向的頁面
+            # 檢查用戶是否為賣家
+            try:
+                if hasattr(user, 'profile') and user.profile.is_seller:
+                    messages.success(request, '賣家登入成功！')
+                    return redirect('seller_dashboard')
+            except:
+                pass
+
+            # 如果不是賣家或發生錯誤，則按正常流程處理
             next_page = request.GET.get('next', 'home')
             messages.success(request, '登入成功！')
             return redirect(next_page)
@@ -80,3 +89,21 @@ def profile(request):
         'orders': orders,
     }
     return render(request, 'account/profile.html', context)
+
+
+@seller_required
+def seller_dashboard(request):
+    """賣家儀表板"""
+    # 獲取賣家的商品
+    products = Product.objects.filter(seller=request.user)
+
+    # 獲取包含賣家商品的訂單
+    orders_with_seller_products = []
+    # 這裡的邏輯需要根據您的訂單模型結構來調整
+    # 這只是一個簡單示例
+
+    context = {
+        'products': products,
+        'orders': orders_with_seller_products,
+    }
+    return render(request, 'account/seller_dashboard.html', context)
