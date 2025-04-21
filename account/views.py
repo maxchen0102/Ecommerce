@@ -4,8 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .forms import RegistrationForm, UserProfileForm
 from .models import UserProfile
-from store.models import Order, Product
-from .decorators import seller_required
+from store.models import Order
 
 
 def register(request):
@@ -40,7 +39,7 @@ def user_login(request):
             try:
                 if hasattr(user, 'profile') and user.profile.is_seller:
                     messages.success(request, '賣家登入成功！')
-                    return redirect('seller_dashboard')
+                    return redirect('seller:dashboard')
             except:
                 pass
 
@@ -89,21 +88,3 @@ def profile(request):
         'orders': orders,
     }
     return render(request, 'account/profile.html', context)
-
-
-@seller_required
-def seller_dashboard(request):
-    """賣家儀表板"""
-    # 獲取賣家的商品
-    products = Product.objects.filter(seller=request.user)
-
-    # 獲取包含賣家商品的訂單
-    orders_with_seller_products = []
-    # 這裡的邏輯需要根據您的訂單模型結構來調整
-    # 這只是一個簡單示例
-
-    context = {
-        'products': products,
-        'orders': orders_with_seller_products,
-    }
-    return render(request, 'account/seller_dashboard.html', context)
