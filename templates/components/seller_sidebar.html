@@ -1,0 +1,17 @@
+<!-- Seller Sidebar Component -->
+<div class="card mb-4">
+    <div class="card-header bg-primary text-white">
+        <h5 class="mb-0">賣家選單</h5>
+    </div>
+    <div class="list-group list-group-flush">
+        <a href="{% url 'seller:dashboard' %}" class="list-group-item list-group-item-action {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}">
+            <i class="bi bi-speedometer2 me-2"></i>儀表板
+        </a>
+        <a href="{% url 'seller:product_list' %}" class="list-group-item list-group-item-action {% if request.resolver_match.url_name == 'product_list' or request.resolver_match.url_name == 'product_create' or request.resolver_match.url_name == 'product_update' %}active{% endif %}">
+            <i class="bi bi-box me-2"></i>我的商品
+        </a>
+        <a href="{% url 'seller:order_list' %}" class="list-group-item list-group-item-action {% if request.resolver_match.url_name == 'order_list' %}active{% endif %}">
+            <i class="bi bi-cart me-2"></i>訂單管理
+        </a>
+    </div>
+</div> 

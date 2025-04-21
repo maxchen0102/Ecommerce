@@ -5,22 +5,7 @@
 {% block content %}
 <div class="row">
     <div class="col-md-3">
-        <div class="card mb-4">
-            <div class="card-header bg-primary text-white">
-                <h5 class="mb-0">賣家選單</h5>
-            </div>
-            <div class="list-group list-group-flush">
-                <a href="{% url 'seller:dashboard' %}" class="list-group-item list-group-item-action">
-                    <i class="bi bi-speedometer2 me-2"></i>儀表板
-                </a>
-                <a href="{% url 'seller:product_list' %}" class="list-group-item list-group-item-action active">
-                    <i class="bi bi-box me-2"></i>我的商品
-                </a>
-                <a href="{% url 'seller:order_list' %}" class="list-group-item list-group-item-action">
-                    <i class="bi bi-cart me-2"></i>訂單管理
-                </a>
-            </div>
-        </div>
+        {% include 'components/seller_sidebar.html' %}
     </div>
 
     <div class="col-md-9">
