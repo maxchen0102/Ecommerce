@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+
+{% block title %}個人資料 | Simple Ecommerce{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8">
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0">個人資料</h4>
+            </div>
+            <div class="card-body">
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+                
+                <div class="row mb-4">
+                    <div class="col-md-3 text-center">
+                        {% if user.profile.profile_picture %}
+                            <img src="{{ user.profile.profile_picture.url }}" class="img-thumbnail rounded-circle" alt="{{ user.username }}">
+                        {% else %}
+                            <div class="bg-light rounded-circle d-flex align-items-center justify-content-center" style="width: 120px; height: 120px; margin: 0 auto;">
+                                <span class="display-4 text-secondary">{{ user.username.0|upper }}</span>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="col-md-9">
+                        <h3>{{ user.get_full_name }}</h3>
+                        <p class="text-muted">{{ user.email }}</p>
+                        <p>帳號建立時間: {{ user.date_joined|date:"Y年m月d日" }}</p>
+                    </div>
+                </div>
+                
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    
+                    <div class="mb-3">
+                        <label for="{{ form.profile_picture.id_for_label }}" class="form-label">頭像</label>
+                        {{ form.profile_picture }}
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="{{ form.phone.id_for_label }}" class="form-label">電話</label>
+                        {{ form.phone }}
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="{{ form.address.id_for_label }}" class="form-label">地址</label>
+                        {{ form.address }}
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label for="{{ form.city.id_for_label }}" class="form-label">城市</label>
+                            {{ form.city }}
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="{{ form.state.id_for_label }}" class="form-label">縣/市</label>
+                            {{ form.state }}
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="{{ form.country.id_for_label }}" class="form-label">國家</label>
+                            {{ form.country }}
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary">更新資料</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header bg-info text-white">
+                <h4 class="mb-0">我的訂單</h4>
+            </div>
+            <div class="card-body p-0">
+                {% if orders %}
+                    <ul class="list-group list-group-flush">
+                        {% for order in orders %}
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <div>
+                                    <span class="fw-bold">訂單 #{{ order.order_number }}</span><br>
+                                    <small class="text-muted">{{ order.created_at|date:"Y/m/d H:i" }}</small>
+                                </div>
+                                <div>
+                                    <span class="badge bg-{{ order.status|lower }}">{{ order.status }}</span>
+                                    <a href="{% url 'order_detail' order.id %}" class="btn btn-sm btn-outline-primary ms-2">查看</a>
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <div class="p-4 text-center">
+                        <p class="mb-0">您還沒有任何訂單</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 
